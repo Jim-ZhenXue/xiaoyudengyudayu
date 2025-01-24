@@ -143,7 +143,7 @@ function App() {
       
       <div className="max-w-6xl mx-auto flex gap-8">
         {/* 左侧栏 - 标题和规则 */}
-        <div className="w-1/4 text-white space-y-8">
+        <div className="w-[50%] text-white space-y-8">
           <div>
             <h1 className="text-3xl font-bold text-blue-400 mb-4">比一比重量</h1>
           </div>
