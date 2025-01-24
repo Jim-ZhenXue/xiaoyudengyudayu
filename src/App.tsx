@@ -221,9 +221,10 @@ function App() {
                   onTouchStart={(e) => handleTouchStart(e, item)}
                   onTouchMove={handleTouchMove}
                   onTouchEnd={handleTouchEnd}
-                  className="p-2 rounded-lg cursor-move hover:scale-110 transition-transform flex items-center justify-center"
+                  className="p-2 rounded-lg cursor-move hover:scale-110 transition-transform flex flex-col items-center justify-center"
                 >
                   {item.icon}
+                  <div className="text-gray-300 text-sm mt-1">{item.weight}克</div>
                 </div>
               ))}
             </div>
