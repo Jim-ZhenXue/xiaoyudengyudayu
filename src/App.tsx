@@ -117,7 +117,7 @@ function App() {
   };
 
   return (
-    <div className="bg-gray-900 min-h-screen flex items-center">
+    <div className="bg-black min-h-screen flex items-center">
       <style>{`
         body {
           overflow: hidden;
