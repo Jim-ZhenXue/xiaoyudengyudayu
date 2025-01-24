@@ -117,7 +117,7 @@ function App() {
   };
 
   return (
-    <div className="min-h-screen bg-blue-50 p-8">
+    <div className="min-h-screen bg-black p-8">
       <style>{`
         body {
           overflow: hidden;
@@ -125,6 +125,7 @@ function App() {
           width: 100%;
           height: 100%;
           touch-action: none;
+          background-color: black;
         }
         #dragged-item {
           position: fixed;
@@ -142,58 +143,54 @@ function App() {
       
       <div className="max-w-6xl mx-auto flex gap-8">
         {/* 左侧栏 - 标题和规则 */}
-        <div className="w-1/4">
-          <div className="bg-white rounded-lg shadow-xl p-6 mb-6">
-          <h1 className="text-3xl font-bold text-blue-800 mb-4">比一比重量</h1>
+        <div className="w-1/4 text-white space-y-8">
+          <div>
+            <h1 className="text-3xl font-bold text-blue-400 mb-4">比一比重量</h1>
           </div>
           
-          <div className="bg-white rounded-lg shadow-xl p-6 mb-6">
-            <h2 className="text-2xl font-bold text-blue-800 mb-4">游戏规则：</h2>
-            <ol className="list-decimal list-inside space-y-2 text-gray-700">
+          <div>
+            <h2 className="text-2xl font-bold text-blue-400 mb-4">游戏规则：</h2>
+            <ol className="list-decimal list-inside space-y-2 text-gray-300">
               <li>将水果拖放到左右两端</li>
-              <li>点击正确的符号（&lt;, =, 或 &gt;）来比较它们的重量</li>
+              <li>判断左右两边哪个更重</li>
               <li>答对得分！</li>
             </ol>
           </div>
           
-          <div className="bg-white rounded-lg shadow-xl p-6">
-          <h1 className="text-3xl font-bold text-blue-800 mb-4">得分：{score}</h1>
+          <div>
+            <h1 className="text-2xl font-bold text-blue-400">得分：{score}</h1>
           </div>
-
-
-          
         </div>
-
 
         {/* 右侧栏 - 游戏主体内容 */}
         <div className="w-3/4">
-          <div className="bg-white rounded-lg shadow-xl p-8">
-            <div className="flex justify-around items-center mb-8">
+          <div className="space-y-8">
+            <div className="flex justify-around items-center">
               <div 
                 id="left-drop-zone"
-                className="w-32 h-32 border-4 border-dashed border-blue-300 rounded-lg flex items-center justify-center bg-blue-50"
+                className="w-32 h-32 border-4 border-dashed border-blue-500 rounded-lg flex items-center justify-center"
                 onDrop={handleDrop('left')}
                 onDragOver={handleDragOver}
               >
-                {leftItem ? leftItem.icon : <p className="text-blue-400">拖放到这里</p>}
+                {leftItem && leftItem.icon}
               </div>
 
               <div className="flex gap-4">
                 <button 
                   onClick={() => checkAnswer('<')}
-                  className={`px-6 py-3 rounded-lg text-2xl font-bold ${userAnswer === '<' ? 'bg-blue-500 text-white' : 'bg-gray-200'}`}
+                  className="px-6 py-3 bg-blue-600 hover:bg-blue-700 text-white rounded-lg text-xl font-bold transition-colors"
                 >
                   &lt;
                 </button>
                 <button 
                   onClick={() => checkAnswer('=')}
-                  className={`px-6 py-3 rounded-lg text-2xl font-bold ${userAnswer === '=' ? 'bg-blue-500 text-white' : 'bg-gray-200'}`}
+                  className="px-6 py-3 bg-blue-600 hover:bg-blue-700 text-white rounded-lg text-xl font-bold transition-colors"
                 >
                   =
                 </button>
                 <button 
                   onClick={() => checkAnswer('>')}
-                  className={`px-6 py-3 rounded-lg text-2xl font-bold ${userAnswer === '>' ? 'bg-blue-500 text-white' : 'bg-gray-200'}`}
+                  className="px-6 py-3 bg-blue-600 hover:bg-blue-700 text-white rounded-lg text-xl font-bold transition-colors"
                 >
                   &gt;
                 </button>
@@ -201,21 +198,15 @@ function App() {
 
               <div 
                 id="right-drop-zone"
-                className="w-32 h-32 border-4 border-dashed border-blue-300 rounded-lg flex items-center justify-center bg-blue-50"
+                className="w-32 h-32 border-4 border-dashed border-blue-500 rounded-lg flex items-center justify-center"
                 onDrop={handleDrop('right')}
                 onDragOver={handleDragOver}
               >
-                {rightItem ? rightItem.icon : <p className="text-blue-400">拖放到这里</p>}
+                {rightItem && rightItem.icon}
               </div>
             </div>
 
-            {feedback && (
-              <p className="text-center text-xl font-semibold mb-8" style={{ color: feedback.includes('正确') ? '#22c55e' : '#ef4444' }}>
-                {feedback}
-              </p>
-            )}
-
-            <div className="flex justify-center gap-8">
+            <div className="grid grid-cols-3 gap-4">
               {items.map((item) => (
                 <div
                   key={item.id}
@@ -224,15 +215,19 @@ function App() {
                   onTouchStart={(e) => handleTouchStart(e, item)}
                   onTouchMove={handleTouchMove}
                   onTouchEnd={handleTouchEnd}
-                  className="cursor-move hover:scale-110 transition-transform"
+                  className="p-4 rounded-lg cursor-move hover:scale-110 transition-transform flex items-center justify-center"
                 >
                   {item.icon}
-                  <p className="text-center mt-2 text-gray-600">{item.name}</p>
-                  <p className="text-center text-sm text-gray-400">{item.weight}克</p>
                 </div>
               ))}
             </div>
           </div>
+
+          {feedback && (
+            <div className={`mt-4 text-center text-xl font-bold ${feedback.includes('正确') ? 'text-green-400' : 'text-red-400'}`}>
+              {feedback}
+            </div>
+          )}
         </div>
       </div>
     </div>
