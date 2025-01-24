@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useRef, TouchEvent } from 'react';
 import { Citrus as Orange, Apple, Cherry } from 'lucide-react';
 
 interface Item {
@@ -14,6 +14,8 @@ function App() {
   const [userAnswer, setUserAnswer] = useState<string>('');
   const [score, setScore] = useState(0);
   const [feedback, setFeedback] = useState('');
+  const [draggedItem, setDraggedItem] = useState<Item | null>(null);
+  const [touchOffset, setTouchOffset] = useState({ x: 0, y: 0 });
 
   // 根据实际水果的平均重量（以克为单位）
   const items: Item[] = [
@@ -46,6 +48,54 @@ function App() {
     e.preventDefault();
   };
 
+  const handleTouchStart = (e: TouchEvent, item: Item) => {
+    e.preventDefault();
+    const touch = e.touches[0];
+    const target = e.currentTarget as HTMLElement;
+    const rect = target.getBoundingClientRect();
+    setTouchOffset({
+      x: touch.clientX - rect.left,
+      y: touch.clientY - rect.top
+    });
+    setDraggedItem(item);
+  };
+
+  const handleTouchMove = (e: TouchEvent) => {
+    e.preventDefault();
+    if (!draggedItem) return;
+    
+    const touch = e.touches[0];
+    const dragElement = document.getElementById('dragged-item');
+    if (dragElement) {
+      dragElement.style.left = `${touch.clientX - touchOffset.x}px`;
+      dragElement.style.top = `${touch.clientY - touchOffset.y}px`;
+    }
+  };
+
+  const handleTouchEnd = (e: TouchEvent) => {
+    e.preventDefault();
+    if (!draggedItem) return;
+
+    const touch = e.changedTouches[0];
+    const leftDropZone = document.getElementById('left-drop-zone');
+    const rightDropZone = document.getElementById('right-drop-zone');
+
+    if (leftDropZone && rightDropZone) {
+      const leftRect = leftDropZone.getBoundingClientRect();
+      const rightRect = rightDropZone.getBoundingClientRect();
+
+      if (touch.clientX >= leftRect.left && touch.clientX <= leftRect.right &&
+          touch.clientY >= leftRect.top && touch.clientY <= leftRect.bottom) {
+        setLeftItem(draggedItem);
+      } else if (touch.clientX >= rightRect.left && touch.clientX <= rightRect.right &&
+                 touch.clientY >= rightRect.top && touch.clientY <= rightRect.bottom) {
+        setRightItem(draggedItem);
+      }
+    }
+
+    setDraggedItem(null);
+  };
+
   const checkAnswer = (symbol: string) => {
     if (!leftItem || !rightItem) {
       setFeedback('请在天平两边各放置一个水果！');
@@ -68,6 +118,28 @@ function App() {
 
   return (
     <div className="min-h-screen bg-blue-50 p-8">
+      <style>{`
+        body {
+          overflow: hidden;
+          position: fixed;
+          width: 100%;
+          height: 100%;
+          touch-action: none;
+        }
+        #dragged-item {
+          position: fixed;
+          pointer-events: none;
+          z-index: 1000;
+          transform: translate(-50%, -50%);
+        }
+      `}</style>
+      
+      {draggedItem && (
+        <div id="dragged-item">
+          {draggedItem.icon}
+        </div>
+      )}
+      
       <div className="max-w-6xl mx-auto flex gap-8">
         {/* 左侧栏 - 标题和规则 */}
         <div className="w-1/4">
@@ -90,6 +162,7 @@ function App() {
           <div className="bg-white rounded-lg shadow-xl p-8">
             <div className="flex justify-around items-center mb-8">
               <div 
+                id="left-drop-zone"
                 className="w-32 h-32 border-4 border-dashed border-blue-300 rounded-lg flex items-center justify-center bg-blue-50"
                 onDrop={handleDrop('left')}
                 onDragOver={handleDragOver}
@@ -119,6 +192,7 @@ function App() {
               </div>
 
               <div 
+                id="right-drop-zone"
                 className="w-32 h-32 border-4 border-dashed border-blue-300 rounded-lg flex items-center justify-center bg-blue-50"
                 onDrop={handleDrop('right')}
                 onDragOver={handleDragOver}
@@ -139,6 +213,9 @@ function App() {
                   key={item.id}
                   draggable
                   onDragStart={(e) => handleDragStart(e, item.id)}
+                  onTouchStart={(e) => handleTouchStart(e, item)}
+                  onTouchMove={handleTouchMove}
+                  onTouchEnd={handleTouchEnd}
                   className="cursor-move hover:scale-110 transition-transform"
                 >
                   {item.icon}
