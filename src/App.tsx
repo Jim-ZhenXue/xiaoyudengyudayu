@@ -68,81 +68,86 @@ function App() {
 
   return (
     <div className="min-h-screen bg-blue-50 p-8">
-      <div className="max-w-4xl mx-auto">
-        <div className="text-center mb-8">
-          <h1 className="text-4xl font-bold text-blue-800 mb-4">水果重量比较游戏</h1>
-          <p className="text-lg text-blue-600">得分：{score}</p>
+      <div className="max-w-6xl mx-auto flex gap-8">
+        {/* 左侧栏 - 标题和规则 */}
+        <div className="w-1/4">
+          <div className="bg-white rounded-lg shadow-xl p-6 mb-6">
+            <h1 className="text-3xl font-bold text-blue-800 mb-4">得分：{score}</h1>
+          </div>
+          
+          <div className="bg-white rounded-lg shadow-xl p-6">
+            <h2 className="text-2xl font-bold text-blue-800 mb-4">游戏规则：</h2>
+            <ol className="list-decimal list-inside space-y-2 text-gray-700">
+              <li>将水果拖放到左右两端</li>
+              <li>点击正确的符号（&lt;, =, 或 &gt;）来比较它们的重量</li>
+              <li>答对得分！</li>
+            </ol>
+          </div>
         </div>
 
-        <div className="bg-white rounded-lg shadow-xl p-8 mb-8">
-          <div className="flex justify-around items-center mb-8">
-            <div 
-              className="w-32 h-32 border-4 border-dashed border-blue-300 rounded-lg flex items-center justify-center bg-blue-50"
-              onDrop={handleDrop('left')}
-              onDragOver={handleDragOver}
-            >
-              {leftItem ? leftItem.icon : <p className="text-blue-400">拖放到这里</p>}
-            </div>
-
-            <div className="flex gap-4">
-              <button 
-                onClick={() => checkAnswer('<')}
-                className={`px-6 py-3 rounded-lg text-2xl font-bold ${userAnswer === '<' ? 'bg-blue-500 text-white' : 'bg-gray-200'}`}
+        {/* 右侧栏 - 游戏主体内容 */}
+        <div className="w-3/4">
+          <div className="bg-white rounded-lg shadow-xl p-8">
+            <div className="flex justify-around items-center mb-8">
+              <div 
+                className="w-32 h-32 border-4 border-dashed border-blue-300 rounded-lg flex items-center justify-center bg-blue-50"
+                onDrop={handleDrop('left')}
+                onDragOver={handleDragOver}
               >
-                &lt;
-              </button>
-              <button 
-                onClick={() => checkAnswer('=')}
-                className={`px-6 py-3 rounded-lg text-2xl font-bold ${userAnswer === '=' ? 'bg-blue-500 text-white' : 'bg-gray-200'}`}
-              >
-                =
-              </button>
-              <button 
-                onClick={() => checkAnswer('>')}
-                className={`px-6 py-3 rounded-lg text-2xl font-bold ${userAnswer === '>' ? 'bg-blue-500 text-white' : 'bg-gray-200'}`}
-              >
-                &gt;
-              </button>
-            </div>
-
-            <div 
-              className="w-32 h-32 border-4 border-dashed border-blue-300 rounded-lg flex items-center justify-center bg-blue-50"
-              onDrop={handleDrop('right')}
-              onDragOver={handleDragOver}
-            >
-              {rightItem ? rightItem.icon : <p className="text-blue-400">拖放到这里</p>}
-            </div>
-          </div>
-
-          {feedback && (
-            <p className="text-center text-xl font-semibold mb-8" style={{ color: feedback.includes('正确') ? '#22c55e' : '#ef4444' }}>
-              {feedback}
-            </p>
-          )}
-
-          <div className="flex justify-center gap-8">
-            {items.map((item) => (
-              <div
-                key={item.id}
-                draggable
-                onDragStart={(e) => handleDragStart(e, item.id)}
-                className="cursor-move hover:scale-110 transition-transform"
-              >
-                {item.icon}
-                <p className="text-center mt-2 text-gray-600">{item.name}</p>
-                <p className="text-center text-sm text-gray-400">{item.weight}克</p>
+                {leftItem ? leftItem.icon : <p className="text-blue-400">拖放到这里</p>}
               </div>
-            ))}
-          </div>
-        </div>
 
-        <div className="bg-white rounded-lg shadow-xl p-6">
-          <h2 className="text-2xl font-bold text-blue-800 mb-4">游戏规则：</h2>
-          <ol className="list-decimal list-inside space-y-2 text-gray-700">
-            <li>将水果拖放到天平的两端</li>
-            <li>点击正确的符号（&lt;, =, 或 &gt;）来比较它们的重量</li>
-            <li>答对得分！</li>
-          </ol>
+              <div className="flex gap-4">
+                <button 
+                  onClick={() => checkAnswer('<')}
+                  className={`px-6 py-3 rounded-lg text-2xl font-bold ${userAnswer === '<' ? 'bg-blue-500 text-white' : 'bg-gray-200'}`}
+                >
+                  &lt;
+                </button>
+                <button 
+                  onClick={() => checkAnswer('=')}
+                  className={`px-6 py-3 rounded-lg text-2xl font-bold ${userAnswer === '=' ? 'bg-blue-500 text-white' : 'bg-gray-200'}`}
+                >
+                  =
+                </button>
+                <button 
+                  onClick={() => checkAnswer('>')}
+                  className={`px-6 py-3 rounded-lg text-2xl font-bold ${userAnswer === '>' ? 'bg-blue-500 text-white' : 'bg-gray-200'}`}
+                >
+                  &gt;
+                </button>
+              </div>
+
+              <div 
+                className="w-32 h-32 border-4 border-dashed border-blue-300 rounded-lg flex items-center justify-center bg-blue-50"
+                onDrop={handleDrop('right')}
+                onDragOver={handleDragOver}
+              >
+                {rightItem ? rightItem.icon : <p className="text-blue-400">拖放到这里</p>}
+              </div>
+            </div>
+
+            {feedback && (
+              <p className="text-center text-xl font-semibold mb-8" style={{ color: feedback.includes('正确') ? '#22c55e' : '#ef4444' }}>
+                {feedback}
+              </p>
+            )}
+
+            <div className="flex justify-center gap-8">
+              {items.map((item) => (
+                <div
+                  key={item.id}
+                  draggable
+                  onDragStart={(e) => handleDragStart(e, item.id)}
+                  className="cursor-move hover:scale-110 transition-transform"
+                >
+                  {item.icon}
+                  <p className="text-center mt-2 text-gray-600">{item.name}</p>
+                  <p className="text-center text-sm text-gray-400">{item.weight}克</p>
+                </div>
+              ))}
+            </div>
+          </div>
         </div>
       </div>
     </div>
