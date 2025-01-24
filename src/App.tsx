@@ -175,24 +175,30 @@ function App() {
                 {leftItem && leftItem.icon}
               </div>
 
-              <div className="flex gap-4">
+              <div className="flex flex-col gap-4">
                 <button 
-                  onClick={() => checkAnswer('<')}
-                  className="px-6 py-3 bg-blue-600 hover:bg-blue-700 text-white rounded-lg text-xl font-bold transition-colors"
+                  onClick={() => checkAnswer('>')}
+                  className={`px-6 py-3 rounded-lg text-xl font-bold transition-colors ${
+                    userAnswer === '>' ? 'bg-blue-600 hover:bg-blue-700' : 'bg-gray-600 hover:bg-gray-700'
+                  } text-white`}
                 >
-                  &lt;
+                  &gt;
                 </button>
                 <button 
                   onClick={() => checkAnswer('=')}
-                  className="px-6 py-3 bg-blue-600 hover:bg-blue-700 text-white rounded-lg text-xl font-bold transition-colors"
+                  className={`px-6 py-3 rounded-lg text-xl font-bold transition-colors ${
+                    userAnswer === '=' ? 'bg-blue-600 hover:bg-blue-700' : 'bg-gray-600 hover:bg-gray-700'
+                  } text-white`}
                 >
                   =
                 </button>
                 <button 
-                  onClick={() => checkAnswer('>')}
-                  className="px-6 py-3 bg-blue-600 hover:bg-blue-700 text-white rounded-lg text-xl font-bold transition-colors"
+                  onClick={() => checkAnswer('<')}
+                  className={`px-6 py-3 rounded-lg text-xl font-bold transition-colors ${
+                    userAnswer === '<' ? 'bg-blue-600 hover:bg-blue-700' : 'bg-gray-600 hover:bg-gray-700'
+                  } text-white`}
                 >
-                  &gt;
+                  &lt;
                 </button>
               </div>
 
@@ -206,7 +212,7 @@ function App() {
               </div>
             </div>
 
-            <div className="grid grid-cols-3 gap-4">
+            <div className="flex justify-center gap-2 mt-8">
               {items.map((item) => (
                 <div
                   key={item.id}
@@ -215,7 +221,7 @@ function App() {
                   onTouchStart={(e) => handleTouchStart(e, item)}
                   onTouchMove={handleTouchMove}
                   onTouchEnd={handleTouchEnd}
-                  className="p-4 rounded-lg cursor-move hover:scale-110 transition-transform flex items-center justify-center"
+                  className="p-2 rounded-lg cursor-move hover:scale-110 transition-transform flex items-center justify-center"
                 >
                   {item.icon}
                 </div>
