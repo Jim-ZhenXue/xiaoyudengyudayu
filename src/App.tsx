@@ -141,7 +141,7 @@ function App() {
         </div>
       )}
       
-      <div className="max-w-6xl mx-auto flex gap-8">
+      <div className="max-w-6xl mx-auto flex gap-20">
         {/* 左侧栏 - 标题和规则 */}
         <div className="w-[50%] text-white space-y-8">
           <div>
@@ -153,13 +153,20 @@ function App() {
             <ol className="list-decimal list-inside space-y-2 text-gray-300">
               <li>将水果拖放到左右两端</li>
               <li>判断左右两边哪个更重</li>
-              <li>答对得分！</li>
             </ol>
           </div>
           
           <div>
             <h1 className="text-2xl font-bold text-blue-400">得分：{score}</h1>
           </div>
+          
+          {feedback && (
+            <div className="mt-4">
+              <p className={`text-xl font-bold ${feedback.includes('正确') ? 'text-green-400' : 'text-red-400'}`}>
+                {feedback}
+              </p>
+            </div>
+          )}
         </div>
 
         {/* 右侧栏 - 游戏主体内容 */}
@@ -229,12 +236,6 @@ function App() {
               ))}
             </div>
           </div>
-
-          {feedback && (
-            <div className={`mt-4 text-center text-xl font-bold ${feedback.includes('正确') ? 'text-green-400' : 'text-red-400'}`}>
-              {feedback}
-            </div>
-          )}
         </div>
       </div>
     </div>
