@@ -144,10 +144,10 @@ function App() {
         {/* 左侧栏 - 标题和规则 */}
         <div className="w-1/4">
           <div className="bg-white rounded-lg shadow-xl p-6 mb-6">
-            <h1 className="text-3xl font-bold text-blue-800 mb-4">得分：{score}</h1>
+          <h1 className="text-3xl font-bold text-blue-800 mb-4">比一比重量</h1>
           </div>
           
-          <div className="bg-white rounded-lg shadow-xl p-6">
+          <div className="bg-white rounded-lg shadow-xl p-6 mb-6">
             <h2 className="text-2xl font-bold text-blue-800 mb-4">游戏规则：</h2>
             <ol className="list-decimal list-inside space-y-2 text-gray-700">
               <li>将水果拖放到左右两端</li>
@@ -155,7 +155,15 @@ function App() {
               <li>答对得分！</li>
             </ol>
           </div>
+          
+          <div className="bg-white rounded-lg shadow-xl p-6">
+          <h1 className="text-3xl font-bold text-blue-800 mb-4">得分：{score}</h1>
+          </div>
+
+
+          
         </div>
+
 
         {/* 右侧栏 - 游戏主体内容 */}
         <div className="w-3/4">
