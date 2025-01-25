@@ -141,7 +141,7 @@ function App() {
         </div>
       )}
       
-      <div className="max-w-6xl mx-auto flex gap-20">
+      <div className="max-w-6xl mx-auto flex gap-40">
         {/* 左侧栏 - 标题和规则 */}
         <div className="w-[50%] text-white space-y-8">
           <div>
@@ -151,7 +151,7 @@ function App() {
           <div>
             <h2 className="text-2xl font-bold text-blue-400 mb-4">游戏规则：</h2>
             <ol className="list-decimal list-inside space-y-2 text-gray-300">
-              <li>将水果拖放到左右两端</li>
+              <li>将水果拖放到左右两个方框</li>
               <li>判断左右两边哪个更重</li>
             </ol>
           </div>
