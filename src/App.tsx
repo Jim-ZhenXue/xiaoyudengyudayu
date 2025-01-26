@@ -149,7 +149,7 @@ function App() {
           </div>
           
           <div>
-            <h2 className="text-2xl font-bold text-blue-400 mb-4">游戏规则：</h2>
+            <h2 className="text-2xl font-bold text-white mb-4">游戏规则:</h2>
             <ol className="list-decimal list-inside space-y-2 text-gray-300">
               <li>将水果拖放到左右两个方框</li>
               <li>判断左右两边哪个更重</li>
@@ -157,7 +157,7 @@ function App() {
           </div>
           
           <div>
-            <h1 className="text-2xl font-bold text-blue-400">得分：{score}</h1>
+            <h1 className="text-2xl font-bold text-white">得分：{score}</h1>
           </div>
           
           {feedback && (
