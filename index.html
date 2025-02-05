@@ -7,9 +7,47 @@
     <meta name="mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-capable" content="yes">
     <title>小于等于大于</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <style>
+      .back-button {
+        position: fixed;
+        top: 20px;
+        left: 20px;
+        width: 50px;
+        height: 50px;
+        padding: 10px;
+        background: transparent;
+        color: white;
+        border: none;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        cursor: pointer;
+        transition: all 0.1s ease;
+        z-index: 1000;
+      }
+      .back-button:hover {
+        transform: translateY(-2px);
+      }
+      .back-button i {
+        font-size: 11.52px;
+      }
+    </style>
   </head>
   <body>
+    <div class="back-button" onclick="goBack()">
+      <i class="fas fa-home"></i>
+    </div>
     <div id="root"></div>
     <script type="module" src="/src/main.tsx"></script>
+    <script>
+      function goBack() {
+        if (window.wx && wx.miniProgram) {
+          wx.miniProgram.navigateBack({
+            delta: 1
+          });
+        }
+      }
+    </script>
   </body>
 </html>
