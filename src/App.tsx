@@ -1,5 +1,6 @@
-import React, { useState, useRef, TouchEvent } from 'react';
+import React, { useState, TouchEvent } from 'react';
 import { Citrus as Orange, Apple, Cherry } from 'lucide-react';
+import { useSoundEffects, SoundEffectType } from './utils/soundEffects';
 
 interface Item {
   id: string;
@@ -16,6 +17,9 @@ function App() {
   const [feedback, setFeedback] = useState('');
   const [draggedItem, setDraggedItem] = useState<Item | null>(null);
   const [touchOffset, setTouchOffset] = useState({ x: 0, y: 0 });
+  
+  // Sound effects hook
+  const { playSound } = useSoundEffects();
 
   // 根据实际水果的平均重量（以克为单位）
   const items: Item[] = [
@@ -26,6 +30,7 @@ function App() {
 
   const handleDragStart = (e: React.DragEvent, itemId: string) => {
     e.dataTransfer.setData('text/plain', itemId);
+    playSound(SoundEffectType.DRAG);
   };
 
   const handleDrop = (side: 'left' | 'right') => (e: React.DragEvent) => {
@@ -34,6 +39,8 @@ function App() {
     const item = items.find(i => i.id === itemId);
     
     if (item) {
+      playSound(SoundEffectType.DROP);
+      
       if (side === 'left') {
         setLeftItem(item);
       } else {
@@ -58,6 +65,7 @@ function App() {
       y: touch.clientY - rect.top
     });
     setDraggedItem(item);
+    playSound(SoundEffectType.DRAG);
   };
 
   const handleTouchMove = (e: TouchEvent) => {
@@ -87,9 +95,11 @@ function App() {
       if (touch.clientX >= leftRect.left && touch.clientX <= leftRect.right &&
           touch.clientY >= leftRect.top && touch.clientY <= leftRect.bottom) {
         setLeftItem(draggedItem);
+        playSound(SoundEffectType.DROP);
       } else if (touch.clientX >= rightRect.left && touch.clientX <= rightRect.right &&
                  touch.clientY >= rightRect.top && touch.clientY <= rightRect.bottom) {
         setRightItem(draggedItem);
+        playSound(SoundEffectType.DROP);
       }
     }
 
@@ -97,6 +107,8 @@ function App() {
   };
 
   const checkAnswer = (symbol: string) => {
+    playSound(SoundEffectType.BUTTON_CLICK);
+    
     if (!leftItem || !rightItem) {
       setFeedback('请在天平两边各放置一个水果！');
       return;
@@ -111,8 +123,10 @@ function App() {
     if (correct) {
       setScore(score + 1);
       setFeedback('回答正确！🎉');
+      playSound(SoundEffectType.CORRECT);
     } else {
       setFeedback('再试一次！🤔');
+      playSound(SoundEffectType.INCORRECT);
     }
   };
 
@@ -141,7 +155,7 @@ function App() {
         </div>
       )}
       
-      <div className="max-w-6xl mx-auto flex gap-40">
+      <div className="max-w-6xl mx-auto flex gap-40 relative">
         {/* 左侧栏 - 标题和规则 */}
         <div className="w-[50%] text-white space-y-8">
           <div>
